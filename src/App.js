@@ -5,7 +5,12 @@ function App() {
     {
       "id":1,
       "content" :"test1"
+    },
+    {
+      "id":2,
+      "content" :"test12"
     }
+
   ];
   return (
     <div className="App">
