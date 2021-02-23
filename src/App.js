@@ -1,5 +1,6 @@
 import './App.css';
 import BoardBox from './components/BoardBox'
+import Header from './components/Header'
 function App() {
   const boards = [
     {
@@ -14,8 +15,8 @@ function App() {
   ];
   return (
     <div className="App">
-      <h1>Boards</h1>
-      <BoardBox boards={boards}/>
+      <Header/>
+      <BoardBox/>
     </div>
   );
 }
