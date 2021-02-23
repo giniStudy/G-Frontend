@@ -29,22 +29,20 @@ function useAsync(callback, deps =[]){
     const [state, dispatch] = useReducer (reducer, {
         loading: false,
         data: null,
-        erorr: false,
+        erorr: false
     });
 
     const fetchData  = async () => {
-        dispatch({type:'LOADING'});
+        dispatch({ type: 'LOADING' });
         try {
             const callbackData = await callback();
-            dispatch({type: 'SUCCESS', data:callbackData});
+            dispatch({ type: 'SUCCESS', data: callbackData });
         } catch (e) {
-            dispatch({ type: 'ERROR', error : e});
+            dispatch({ type: 'ERROR', error: e});
         }
     };
 
-    useEffect( () => {
-        fetchData();
-    },deps);
+    useEffect(fetchData, deps);
     return [state, fetchData];
 }
 
