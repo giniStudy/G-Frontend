@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import useAsync from "../hook/useAsync";
-import Board from "./Board";
-import "../css/Board.css";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import useAsync from '../hook/useAsync';
+import Board from './Board';
+import '../css/Board.css';
 
 async function getBoards(page) {
   const response = await axios.get(`/board?page=${page}&size=3`);
   return response.data;
 }
 
-function BoardBox({}) {
+function BoardBox() {
   const [boards, setBoards] = useState([]);
   const [page, setPage] = useState(0);
   const [state] = useAsync(() => getBoards(page), [page]);
@@ -63,7 +63,7 @@ function BoardBox({}) {
           </tbody>
         </table>
       </div>
-      {totalPages-1 != page && <button onClick={fetchBoards}>다음</button>}
+      {totalPages - 1 !== page && <button onClick={fetchBoards}>다음</button>}
     </section>
   );
 }
