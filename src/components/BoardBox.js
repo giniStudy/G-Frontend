@@ -15,13 +15,13 @@ function BoardBox() {
   const [state] = useAsync(() => getBoards(page), [page]);
   // const { loading, data: { content: _boards, totalPages } = { content: [], totalPages: 1 }, error } = state.data? state: {};
   const { loading, data, error } = state;
-  const { content: _boards, totalPages } = data || {};
+  const { content: newBoard, totalPages } = data || {};
 
   const fetchBoards = () => setPage(page + 1);
 
   useEffect(() => {
-    setBoards([...boards, ...(_boards || [])]);
-  }, [_boards]);
+    setBoards([...boards, ...(newBoard || [])]);
+  }, [newBoard]);
 
   return (
     <section>
