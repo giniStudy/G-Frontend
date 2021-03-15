@@ -3,6 +3,9 @@ import axios from 'axios';
 import useAsync from '../hook/useAsync';
 import Board from './Board';
 import '../css/Board.css';
+import { Button } from 'antd';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 async function getBoards(page) {
   const response = await axios.get(`/board?page=${page}&size=3`);
@@ -23,8 +26,20 @@ function BoardBox() {
     setBoards([...boards, ...(newBoard || [])]);
   }, [newBoard]);
 
+  const PlusButton = styled.div`
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+  `;
   return (
     <section>
+      <PlusButton>
+        <Link to="/boards/add">
+          <Button type="primary" shape="circle">
+            +
+          </Button>
+        </Link>
+      </PlusButton>
       <div className="page-title">
         <div className="container">
           <h3>게시판</h3>
@@ -48,7 +63,11 @@ function BoardBox() {
           <tbody>
             {boards &&
               boards.map((board) => (
-                <Board key={board.bid} id={board.bid} content={board.content} />
+                <Board
+                  key={board.b_id}
+                  id={board.b_id}
+                  content={board.content}
+                />
               ))}
             {loading && (
               <tr>
@@ -62,8 +81,12 @@ function BoardBox() {
             )}
           </tbody>
         </table>
+        {totalPages - 1 !== page && (
+          <Button block onClick={fetchBoards}>
+            다음
+          </Button>
+        )}
       </div>
-      {totalPages - 1 !== page && <button onClick={fetchBoards}>다음</button>}
     </section>
   );
 }
