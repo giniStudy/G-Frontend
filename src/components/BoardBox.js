@@ -8,7 +8,9 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 async function getBoards(page) {
-  const response = await axios.get(`/board?page=${page}&size=3`);
+  const response = await axios.get(
+    `${process.env.REACT_APP_API_HOST}/board?page=${page}&size=3`,
+  );
   return response.data;
 }
 
@@ -31,11 +33,18 @@ function BoardBox() {
     right: 20px;
     bottom: 20px;
   `;
+
+  const ButtonSize = {
+    fontSize: '1.9em',
+    width: '1.9em',
+    height: '1.9em',
+  };
+
   return (
     <section>
       <PlusButton>
         <Link to="/boards/add">
-          <Button type="primary" shape="circle">
+          <Button type="primary" shape="circle" style={ButtonSize}>
             +
           </Button>
         </Link>
