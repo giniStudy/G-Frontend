@@ -1,22 +1,23 @@
-import React from "react";
-import "../css/Header.css";
+import React from 'react';
+import '../css/Header.css';
+import { Link } from 'react-router-dom';
 function Header() {
   return (
     <header className="header">
-      <a href="" className="logo">
+      <Link to="/" className="logo">
         GINI
-      </a>
+      </Link>
       <input className="menu-btn" type="checkbox" id="menu-btn" />
       <label className="menu-icon">
         <span className="navicon"></span>
-      </label>{" "}
+      </label>{' '}
       {/*for="menu-btn"*/}
       <ul className="menu">
         <li>
           <a href="#work">Our Work</a>
         </li>
         <li>
-          <a href="#about">About</a>
+          <Link to="/about">About</Link>
         </li>
         <li>
           <a href="#careers">Careers</a>
