@@ -7,20 +7,31 @@ import { Button } from 'antd';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-async function getBoards(page) {
+async function getBoards(page, category) {
   const response = await axios.get(
-    `${process.env.REACT_APP_API_HOST}/board?page=${page}&size=3`,
+    `/board?page=${page}&size=3&cIdx=${category}`,
   );
   return response.data;
 }
 
-function BoardBox() {
+async function getCategory() {
+  const response = await axios.get(`/category`);
+  return response.data;
+}
+
+function BoardBox({ match }) {
+  const [categorys] = useAsync(getCategory, []);
+  const { data: category } = categorys;
+
   const [boards, setBoards] = useState([]);
   const [page, setPage] = useState(0);
-  const [state] = useAsync(() => getBoards(page), [page]);
+  const { categorySeq } = match.params;
+
+  const [state] = useAsync(() => getBoards(page, categorySeq), [page]);
+
   // const { loading, data: { content: _boards, totalPages } = { content: [], totalPages: 1 }, error } = state.data? state: {};
   const { loading, data, error } = state;
-  const { content: newBoard, totalPages } = data || {};
+  const { content: newBoard, total_pages: totalPages } = data || {};
 
   const fetchBoards = () => setPage(page + 1);
 
@@ -39,6 +50,11 @@ function BoardBox() {
     width: '1.9em',
     height: '1.9em',
   };
+  const CategoryStyle = {
+    color: 'red',
+    fontSize: '20px',
+    display: 'block',
+  };
 
   return (
     <section>
@@ -49,6 +65,18 @@ function BoardBox() {
           </Button>
         </Link>
       </PlusButton>
+      <ol>
+        {category &&
+          category.map((cc) => (
+            <Link
+              to={`/board/${cc.c_idx}`}
+              style={CategoryStyle}
+              key={cc.c_idx}
+            >
+              {cc.name}
+            </Link>
+          ))}
+      </ol>
       <div className="page-title">
         <div className="container">
           <h3>게시판</h3>
@@ -73,9 +101,9 @@ function BoardBox() {
             {boards &&
               boards.map((board) => (
                 <Board
-                  key={board.b_id}
+                  key={board.b_idx}
                   id={board.b_id}
-                  content={board.content}
+                  content={board.title}
                 />
               ))}
             {loading && (
