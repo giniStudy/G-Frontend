@@ -1,21 +1,21 @@
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect } from 'react';
 
 function reducer(state, action) {
   switch (action.type) {
-    case "LOADING":
+    case 'LOADING':
       return {
         loading: true,
         data: null,
         error: null,
       };
-    case "SUCCESS":
+    case 'SUCCESS':
       console.log(action.data);
       return {
         loading: false,
         data: action.data,
         error: null,
       };
-    case "ERROR":
+    case 'ERROR':
       return {
         loading: false,
         data: null,
@@ -34,12 +34,12 @@ function useAsync(callback, deps = []) {
   });
 
   const fetchData = async () => {
-    dispatch({ type: "LOADING" });
+    dispatch({ type: 'LOADING' });
     try {
       const callbackData = await callback();
-      dispatch({ type: "SUCCESS", data: callbackData });
+      dispatch({ type: 'SUCCESS', data: callbackData });
     } catch (e) {
-      dispatch({ type: "ERROR", error: e });
+      dispatch({ type: 'ERROR', error: e });
     }
   };
 
