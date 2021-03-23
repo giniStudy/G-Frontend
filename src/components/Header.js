@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 function Header() {
   return (
     <header className="header">
-      <Link to="/" className="logo">
+      <Link to="/boards/0" className="logo">
         GINI
       </Link>
       <input className="menu-btn" type="checkbox" id="menu-btn" />

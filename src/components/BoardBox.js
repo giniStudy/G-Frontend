@@ -7,20 +7,37 @@ import { Button } from 'antd';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-async function getBoards(page) {
+async function getBoards(page, category) {
   const response = await axios.get(
-    `${process.env.REACT_APP_API_HOST}/board?page=${page}&size=3`,
+    `/board?page=${page}&size=3${
+      // TODO 예외처리 != ?? 처리 필요
+      category != 0 ? '&categoryId=' + category : ''
+    }`,
   );
   return response.data;
 }
 
-function BoardBox() {
+async function getCategory() {
+  const response = await axios.get(`/category`);
+  return response.data;
+}
+
+function BoardBox({ match }) {
+  const [categorys] = useAsync(getCategory, []);
+  const { data: category } = categorys;
+
   const [boards, setBoards] = useState([]);
   const [page, setPage] = useState(0);
-  const [state] = useAsync(() => getBoards(page), [page]);
+  const { categorySeq } = match.params;
+
+  const [state] = useAsync(() => getBoards(page, categorySeq), [
+    page,
+    categorySeq,
+  ]);
+
   // const { loading, data: { content: _boards, totalPages } = { content: [], totalPages: 1 }, error } = state.data? state: {};
   const { loading, data, error } = state;
-  const { content: newBoard, totalPages } = data || {};
+  const { content: newBoard, total_pages: totalPages } = data || {};
 
   const fetchBoards = () => setPage(page + 1);
 
@@ -39,16 +56,48 @@ function BoardBox() {
     width: '1.9em',
     height: '1.9em',
   };
+  const CategoryStyle = {
+    color: 'red',
+    fontSize: '20px',
+    display: 'block',
+  };
 
   return (
     <section>
       <PlusButton>
-        <Link to="/boards/add">
+        <Link to="/board/add">
           <Button type="primary" shape="circle" style={ButtonSize}>
             +
           </Button>
         </Link>
       </PlusButton>
+      <ol>
+        <Link
+          to={`/boards/0`}
+          style={CategoryStyle}
+          key={0}
+          onClick={() => {
+            setBoards([]);
+            setPage(0);
+          }}
+        >
+          전체보기
+        </Link>
+        {category &&
+          category.map((cc) => (
+            <Link
+              to={`/boards/${cc.category_id}`}
+              style={CategoryStyle}
+              key={cc.category_id}
+              onClick={() => {
+                setBoards([]);
+                setPage(0);
+              }}
+            >
+              {cc.name}
+            </Link>
+          ))}
+      </ol>
       <div className="page-title">
         <div className="container">
           <h3>게시판</h3>
@@ -73,9 +122,9 @@ function BoardBox() {
             {boards &&
               boards.map((board) => (
                 <Board
-                  key={board.b_id}
-                  id={board.b_id}
-                  content={board.content}
+                  key={board.board_id}
+                  id={board.board_id}
+                  content={board.title}
                 />
               ))}
             {loading && (
