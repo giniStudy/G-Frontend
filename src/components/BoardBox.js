@@ -9,7 +9,10 @@ import { Link } from 'react-router-dom';
 
 async function getBoards(page, category) {
   const response = await axios.get(
-    `/board?page=${page}&size=3&cIdx=${category}`,
+    `/board?page=${page}&size=3${
+      // TODO 예외처리 != ?? 처리 필요
+      category != 0 ? '&categoryId=' + category : ''
+    }`,
   );
   return response.data;
 }
@@ -27,7 +30,10 @@ function BoardBox({ match }) {
   const [page, setPage] = useState(0);
   const { categorySeq } = match.params;
 
-  const [state] = useAsync(() => getBoards(page, categorySeq), [page]);
+  const [state] = useAsync(() => getBoards(page, categorySeq), [
+    page,
+    categorySeq,
+  ]);
 
   // const { loading, data: { content: _boards, totalPages } = { content: [], totalPages: 1 }, error } = state.data? state: {};
   const { loading, data, error } = state;
@@ -69,9 +75,13 @@ function BoardBox({ match }) {
         {category &&
           category.map((cc) => (
             <Link
-              to={`/board/${cc.c_idx}`}
+              to={`/board/${cc.category_id}`}
               style={CategoryStyle}
-              key={cc.c_idx}
+              key={cc.category_id}
+              onClick={() => {
+                setBoards([]);
+                setPage(0);
+              }}
             >
               {cc.name}
             </Link>
@@ -101,8 +111,8 @@ function BoardBox({ match }) {
             {boards &&
               boards.map((board) => (
                 <Board
-                  key={board.b_idx}
-                  id={board.b_id}
+                  key={board.board_id}
+                  id={board.board_id}
                   content={board.title}
                 />
               ))}
