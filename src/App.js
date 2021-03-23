@@ -10,7 +10,7 @@ function App() {
     <div className="App">
       <Header />
       <Route path="/about" component={About} />
-      <Route path="/board/:categorySeq" component={BoardBox} />
+      <Route path="/boards/:categorySeq" component={BoardBox} />
       <Route path="/board/add" exact={true} component={BoardCreate} />
     </div>
   );

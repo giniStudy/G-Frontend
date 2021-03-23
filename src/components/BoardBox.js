@@ -65,17 +65,28 @@ function BoardBox({ match }) {
   return (
     <section>
       <PlusButton>
-        <Link to="/boards/add">
+        <Link to="/board/add">
           <Button type="primary" shape="circle" style={ButtonSize}>
             +
           </Button>
         </Link>
       </PlusButton>
       <ol>
+        <Link
+          to={`/boards/0`}
+          style={CategoryStyle}
+          key={0}
+          onClick={() => {
+            setBoards([]);
+            setPage(0);
+          }}
+        >
+          전체보기
+        </Link>
         {category &&
           category.map((cc) => (
             <Link
-              to={`/board/${cc.category_id}`}
+              to={`/boards/${cc.category_id}`}
               style={CategoryStyle}
               key={cc.category_id}
               onClick={() => {
