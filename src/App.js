@@ -4,6 +4,7 @@ import Header from './components/Header';
 import About from './route/About';
 import { Route } from 'react-router-dom';
 import BoardCreate from './components/BoardCreate';
+import BoardDetail from './components/BoardDetail';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Header />
       <Route path="/about" component={About} />
       <Route path="/boards/:categorySeq" component={BoardBox} />
+      <Route path="/board/:id" component={BoardDetail} />
       <Route path="/board/add" exact={true} component={BoardCreate} />
     </div>
   );

@@ -121,11 +121,13 @@ function BoardBox({ match }) {
           <tbody>
             {boards &&
               boards.map((board) => (
-                <Board
-                  key={board.board_id}
-                  id={board.board_id}
-                  content={board.title}
-                />
+                <Link to={`/board/${board.board_id}`}>
+                  <Board
+                    key={board.board_id}
+                    id={board.board_id}
+                    content={board.title}
+                  />
+                </Link>
               ))}
             {loading && (
               <tr>
