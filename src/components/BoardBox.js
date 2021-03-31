@@ -14,7 +14,7 @@ async function getBoards(page, category) {
       category != 0 ? '&categoryId=' + category : ''
     }`,
   );
-  return response.data;
+  return response.data.data;
 }
 
 async function getCategory() {
