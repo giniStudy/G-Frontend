@@ -6,6 +6,7 @@ import '../css/Board.css';
 import { Button } from 'antd';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import '../css/Navi.sass';
 
 async function getBoards(page, category) {
   const response = await axios.get(
@@ -56,11 +57,6 @@ function BoardBox({ match }) {
     width: '1.9em',
     height: '1.9em',
   };
-  const CategoryStyle = {
-    color: 'red',
-    fontSize: '20px',
-    display: 'block',
-  };
 
   return (
     <section>
@@ -71,10 +67,10 @@ function BoardBox({ match }) {
           </Button>
         </Link>
       </PlusButton>
-      <ol>
+      <ol className="nav-box">
         <Link
           to={`/boards/0`}
-          style={CategoryStyle}
+          className="nav-tab"
           key={0}
           onClick={() => {
             setBoards([]);
@@ -87,7 +83,7 @@ function BoardBox({ match }) {
           category.map((cc) => (
             <Link
               to={`/boards/${cc.category_id}`}
-              style={CategoryStyle}
+              className="nav-tab"
               key={cc.category_id}
               onClick={() => {
                 setBoards([]);
@@ -121,13 +117,11 @@ function BoardBox({ match }) {
           <tbody>
             {boards &&
               boards.map((board) => (
-                <Link to={`/board/${board.board_id}`}>
                   <Board
                     key={board.board_id}
                     id={board.board_id}
                     content={board.title}
                   />
-                </Link>
               ))}
             {loading && (
               <tr>
