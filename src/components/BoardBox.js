@@ -5,7 +5,7 @@ import Board from './Board';
 import '../css/Board.css';
 import { Button } from 'antd';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, NavLink} from 'react-router-dom';
 import '../css/Navi.sass';
 
 async function getBoards(page, category) {
@@ -68,9 +68,10 @@ function BoardBox({ match }) {
         </Link>
       </PlusButton>
       <ol className="nav-box">
-        <Link
+        <NavLink
           to={`/boards/0`}
           className="nav-tab"
+          activeClassName="on"
           key={0}
           onClick={() => {
             setBoards([]);
@@ -78,20 +79,21 @@ function BoardBox({ match }) {
           }}
         >
           전체보기
-        </Link>
+        </NavLink>
         {category &&
           category.map((cc) => (
-            <Link
+            <NavLink
               to={`/boards/${cc.category_id}`}
               className="nav-tab"
               key={cc.category_id}
+              activeClassName="on"
               onClick={() => {
                 setBoards([]);
                 setPage(0);
               }}
             >
               {cc.name}
-            </Link>
+            </NavLink>
           ))}
       </ol>
       <div className="page-title">
