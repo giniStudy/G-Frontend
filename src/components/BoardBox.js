@@ -46,6 +46,8 @@ function BoardBox({ match }) {
     setBoards([...boards, ...(newBoard || [])]);
   }, [newBoard]);
 
+  
+
   const PlusButton = styled.div`
     position: fixed;
     right: 20px;

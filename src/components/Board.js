@@ -1,18 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
-function Board(porps) {
+function Board(props) {
+  const {history} = props;
   return (
-    <tr>
-      
-      <td><Link to={`/board/${porps.id}`}>{porps.id}</Link></td>
+    <tr onClick={() => {history.push(`/board/${props.id}`)}}>   
+      <td>{props.id}</td>
       <td>
-        <a href="#!">{porps.content}</a>
+        {props.content}
       </td>
       <td>2017.06.15</td>
-      
     </tr>
   );
 }
 
-export default Board;
+export default withRouter( Board );

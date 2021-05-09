@@ -13,6 +13,7 @@ function BoardDetail({match}) {
   const [data] = useAsync(() => getBoardDetail(id), [id]);
   const {loading, data:board, error} = data;
   const {content, board_id} = board || {};
+ 
   return (
     <section>
       <div>{id}</div>
