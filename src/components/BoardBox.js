@@ -111,12 +111,12 @@ function BoardBox({ match }) {
             ))}
           {loading && (
             <div>
-              <td>로딩중...</td>
+              <div>로딩중...</div>
             </div>
           )}
           {error && (
             <div>
-              <td>error</td>
+              <div>error</div>
             </div>
           )}
           {totalPages - 1 !== page && (
