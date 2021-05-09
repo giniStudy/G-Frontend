@@ -12,14 +12,15 @@ function BoardDetail({match}) {
   const { id } = match.params;
   const [data] = useAsync(() => getBoardDetail(id), [id]);
   const {loading, data:board, error} = data;
-  const {content, board_id} = board || {};
+  const {content, board_id, title} = board || {};
  
   return (
-    <section>
+    <div>
       <div>{id}</div>
+      <div>{title}</div>
       <div>{board_id}</div>
       <div>{content}</div>
-    </section>
+    </div>
   );
 }
 

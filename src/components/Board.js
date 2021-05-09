@@ -4,13 +4,13 @@ import { withRouter } from 'react-router-dom';
 function Board(props) {
   const {history} = props;
   return (
-    <tr onClick={() => {history.push(`/board/${props.id}`)}}>   
-      <td>{props.id}</td>
-      <td>
+    <div className="board" onClick={() => {history.push(`/board/${props.id}`)}}>   
+      <div className="title">{props.title}</div>
+      <p>
         {props.content}
-      </td>
-      <td>2017.06.15</td>
-    </tr>
+      </p>
+      <div className="subInfo">2017.06.15</div>
+    </div>
   );
 }
 

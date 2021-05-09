@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import useAsync from '../hook/useAsync';
 import Board from './Board';
-import '../css/Board.css';
+import '../css/Board.sass';
 import { Button } from 'antd';
 import styled from 'styled-components';
 import { Link, NavLink} from 'react-router-dom';
@@ -61,7 +61,7 @@ function BoardBox({ match }) {
   };
 
   return (
-    <section>
+    <section className="mainSection">
       <PlusButton>
         <Link to="/board/add">
           <Button type="primary" shape="circle" style={ButtonSize}>
@@ -69,10 +69,10 @@ function BoardBox({ match }) {
           </Button>
         </Link>
       </PlusButton>
-      <ol className="nav-box">
+      <ol className="navBox">
         <NavLink
           to={`/boards/0`}
-          className="nav-tab"
+          className="navTab"
           activeClassName="on"
           key={0}
           onClick={() => {
@@ -86,7 +86,7 @@ function BoardBox({ match }) {
           category.map((cc) => (
             <NavLink
               to={`/boards/${cc.category_id}`}
-              className="nav-tab"
+              className="navTab"
               key={cc.category_id}
               activeClassName="on"
               onClick={() => {
@@ -98,52 +98,33 @@ function BoardBox({ match }) {
             </NavLink>
           ))}
       </ol>
-      <div className="page-title">
-        <div className="container">
-          <h3>게시판</h3>
+      <div className="boardRow boardBox">  
+        <div className="boardList">
+          {boards &&
+            boards.map((board) => (
+                <Board
+                  key={board.board_id}
+                  id={board.board_id}
+                  title={board.title}
+                  content={board.content}
+                />
+            ))}
+          {loading && (
+            <div>
+              <td>로딩중...</td>
+            </div>
+          )}
+          {error && (
+            <div>
+              <td>error</td>
+            </div>
+          )}
+          {totalPages - 1 !== page && (
+            <Button block onClick={fetchBoards}>
+              다음
+            </Button>
+          )}
         </div>
-      </div>
-      <div className="board-list">
-        <table className="board-table">
-          <thead>
-            <tr>
-              <th scope="col" className="th-num">
-                번호
-              </th>
-              <th scope="col" className="th-title">
-                제목
-              </th>
-              <th scope="col" className="th-date">
-                등록일
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {boards &&
-              boards.map((board) => (
-                  <Board
-                    key={board.board_id}
-                    id={board.board_id}
-                    content={board.title}
-                  />
-              ))}
-            {loading && (
-              <tr>
-                <td>로딩중...</td>
-              </tr>
-            )}
-            {error && (
-              <tr>
-                <td>error</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-        {totalPages - 1 !== page && (
-          <Button block onClick={fetchBoards}>
-            다음
-          </Button>
-        )}
       </div>
     </section>
   );
