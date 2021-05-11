@@ -69,35 +69,40 @@ function BoardBox({ match }) {
           </Button>
         </Link>
       </PlusButton>
-      <ol className="navBox">
-        <NavLink
-          to={`/boards/0`}
-          className="navTab"
-          activeClassName="on"
-          key={0}
-          onClick={() => {
-            setBoards([]);
-            setPage(0);
-          }}
-        >
-          전체보기
-        </NavLink>
-        {category &&
-          category.map((cc) => (
-            <NavLink
-              to={`/boards/${cc.category_id}`}
-              className="navTab"
-              key={cc.category_id}
-              activeClassName="on"
-              onClick={() => {
-                setBoards([]);
-                setPage(0);
-              }}
-            >
-              {cc.name}
-            </NavLink>
-          ))}
-      </ol>
+      <div className="navBox">
+        <div className="navHeader">
+          목록
+        </div>
+        <ol className="">
+          <NavLink
+            to={`/boards/0`}
+            className="navTab"
+            activeClassName="on"
+            key={0}
+            onClick={() => {
+              setBoards([]);
+              setPage(0);
+            }}
+          >
+            전체보기
+          </NavLink>
+          {category &&
+            category.map((cc) => (
+              <NavLink
+                to={`/boards/${cc.category_id}`}
+                className="navTab"
+                key={cc.category_id}
+                activeClassName="on"
+                onClick={() => {
+                  setBoards([]);
+                  setPage(0);
+                }}
+              >
+                {cc.name}
+              </NavLink>
+            ))}
+        </ol>
+      </div>
       <div className="boardRow boardBox">  
         <div className="boardList">
           {boards &&
@@ -121,7 +126,7 @@ function BoardBox({ match }) {
           )}
           {totalPages - 1 !== page && (
             <Button block onClick={fetchBoards}>
-              다음
+              더보기
             </Button>
           )}
         </div>
