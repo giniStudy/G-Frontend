@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import useAsync from '../hook/useAsync';
 import Board from './Board';
-import '../css/Board.css';
+import '../css/Board.sass';
 import { Button } from 'antd';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, NavLink} from 'react-router-dom';
+import '../css/Navi.sass';
 
 async function getBoards(page, category) {
   const response = await axios.get(
@@ -14,7 +15,7 @@ async function getBoards(page, category) {
       category != 0 ? '&categoryId=' + category : ''
     }`,
   );
-  return response.data;
+  return response.data.data;
 }
 
 async function getCategory() {
@@ -45,6 +46,8 @@ function BoardBox({ match }) {
     setBoards([...boards, ...(newBoard || [])]);
   }, [newBoard]);
 
+  
+
   const PlusButton = styled.div`
     position: fixed;
     right: 20px;
@@ -56,14 +59,9 @@ function BoardBox({ match }) {
     width: '1.9em',
     height: '1.9em',
   };
-  const CategoryStyle = {
-    color: 'red',
-    fontSize: '20px',
-    display: 'block',
-  };
 
   return (
-    <section>
+    <section className="mainSection">
       <PlusButton>
         <Link to="/board/add">
           <Button type="primary" shape="circle" style={ButtonSize}>
@@ -71,79 +69,67 @@ function BoardBox({ match }) {
           </Button>
         </Link>
       </PlusButton>
-      <ol>
-        <Link
-          to={`/boards/0`}
-          style={CategoryStyle}
-          key={0}
-          onClick={() => {
-            setBoards([]);
-            setPage(0);
-          }}
-        >
-          전체보기
-        </Link>
-        {category &&
-          category.map((cc) => (
-            <Link
-              to={`/boards/${cc.category_id}`}
-              style={CategoryStyle}
-              key={cc.category_id}
-              onClick={() => {
-                setBoards([]);
-                setPage(0);
-              }}
-            >
-              {cc.name}
-            </Link>
-          ))}
-      </ol>
-      <div className="page-title">
-        <div className="container">
-          <h3>게시판</h3>
+      <div className="navBox">
+        <div className="navHeader">
+          목록
         </div>
+        <ol className="">
+          <NavLink
+            to={`/boards/0`}
+            className="navTab"
+            activeClassName="on"
+            key={0}
+            onClick={() => {
+              setBoards([]);
+              setPage(0);
+            }}
+          >
+            전체보기
+          </NavLink>
+          {category &&
+            category.map((cc) => (
+              <NavLink
+                to={`/boards/${cc.category_id}`}
+                className="navTab"
+                key={cc.category_id}
+                activeClassName="on"
+                onClick={() => {
+                  setBoards([]);
+                  setPage(0);
+                }}
+              >
+                {cc.name}
+              </NavLink>
+            ))}
+        </ol>
       </div>
-      <div className="board-list">
-        <table className="board-table">
-          <thead>
-            <tr>
-              <th scope="col" className="th-num">
-                번호
-              </th>
-              <th scope="col" className="th-title">
-                제목
-              </th>
-              <th scope="col" className="th-date">
-                등록일
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {boards &&
-              boards.map((board) => (
+      <div className="boardRow boardBox">  
+        <div className="boardList">
+          {boards &&
+            boards.map((board) => (
                 <Board
                   key={board.board_id}
                   id={board.board_id}
-                  content={board.title}
+                  title={board.title}
+                  content={board.content}
                 />
-              ))}
-            {loading && (
-              <tr>
-                <td>로딩중...</td>
-              </tr>
-            )}
-            {error && (
-              <tr>
-                <td>error</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-        {totalPages - 1 !== page && (
-          <Button block onClick={fetchBoards}>
-            다음
-          </Button>
-        )}
+            ))}
+          {loading && (
+            <div>
+              <div>로딩중...</div>
+            </div>
+          )}
+          {error && (
+            <div>
+              <div>error</div>
+            </div>
+          )}
+          {totalPages - 1 !== page && (
+            <Button block onClick={fetchBoards}>
+              더보기
+            </Button>
+          )}
+        </div>
       </div>
     </section>
   );

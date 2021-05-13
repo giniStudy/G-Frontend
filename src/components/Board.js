@@ -1,15 +1,17 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
-function Board(porps) {
+function Board(props) {
+  const {history} = props;
   return (
-    <tr>
-      <td>{porps.id}</td>
-      <th>
-        <a href="#!">{porps.content}</a>
-      </th>
-      <td>2017.06.15</td>
-    </tr>
+    <div className="board" >   
+      <div className="title" onClick={() => {history.push(`/board/${props.id}`)}}>{props.title}</div>
+      <p>
+        {props.content}
+      </p>
+      <div className="subInfo">2017.06.15</div>
+    </div>
   );
 }
 
-export default Board;
+export default withRouter( Board );
