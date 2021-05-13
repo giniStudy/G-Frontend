@@ -1,17 +1,20 @@
-import { Input, Typography, Button } from 'antd';
 import React from 'react';
 
-const { TextArea } = Input;
-const { Title } = Typography;
 
 function Create({ title }) {
   return (
-    <div className="container">
-      <Title level={3}>{title}</Title>
-      <Input placeholder="Title" />
-      <TextArea rows={4} />
-      <Button>취소</Button>
-      <Button type="primary">생성</Button>
+    <div className="maxWidth">
+      <div >{title}</div>
+      <div>
+        <input placeholder="Title" />
+      </div>
+      <div>
+        <textarea rows={4} />
+      </div>
+      <div>
+      <button>취소</button>
+      <button type="primary">생성</button>
+      </div>
     </div>
   );
 }
