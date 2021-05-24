@@ -12,21 +12,23 @@ const InlineCode =  styled.span`
     color: white;
 `;
 
-
-function InlineCodeBlock (children) {
-    return (
-        <InlineCode>{children.value}</InlineCode>
-    );
-};
-
+const components = {
+    code({node, inline, className, children, ...props}){
+        console.log(children[0]);
+        const match = /language-(\w+)/.exec(className || '')
+        return !inline && match ? (<>test</>) : (<InlineCode>{children[0]}</InlineCode>) 
+    }
+}
+/**
+ * https://github.com/remarkjs/react-markdown#node-types
+ * 커스텀 컴포넌트 
+ */
 export default function MarkDown ({children}){
 
-    const renderers = {
-        "inlineCode" : InlineCodeBlock
-    }
+
     return (
         <MarkDownStyle>
-            <ReactMarkdown renderers={renderers}
+            <ReactMarkdown components={components}
             >
                 {children}
             </ReactMarkdown>
