@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import MarkDown from './MarkDown';
 
@@ -23,6 +23,10 @@ const MarkDwonStyle = styled.div`
   max-width : 1100px;
 `;
 function Create({ title }) {
+  const [mainText, setMainText] = useState("");
+  const onChange = (e) => {
+    setMainText(e.target.value);
+  }
   return (
     <div className="maxWidth">
       <div >{title}</div>
@@ -30,14 +34,14 @@ function Create({ title }) {
         <input placeholder="Title" />
       </div>
       <div>
-        <textarea rows={4} />
+        <textarea onChange={onChange} rows={4} value={mainText}/>
       </div>
       <div>
       <button>취소</button>
       <button type="primary">생성</button>
       <div style={{width: "100%", maxWidth: "1000px", border : "1px solid #424242"}}>
         <MarkDwonStyle>
-          <MarkDown>{markDown}</MarkDown>          
+          <MarkDown>{mainText == "" ? markDown : mainText}</MarkDown>          
         </MarkDwonStyle>
       </div>
       </div>
