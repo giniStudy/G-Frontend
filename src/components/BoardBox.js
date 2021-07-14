@@ -5,15 +5,16 @@ import Board from './Board';
 import '../css/Board.sass';
 import { Button } from 'antd';
 import styled from 'styled-components';
-import { Link, NavLink} from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import '../css/Navi.sass';
+import { Spin, Switch, Modal } from 'antd';
 
 async function getBoards(page, category) {
   const response = await axios.get(
     `/board?page=${page}&size=3${
       // TODO 예외처리 != ?? 처리 필요
       category != 0 ? '&categoryId=' + category : ''
-    }`,
+    }`
   );
   return response.data.data;
 }
@@ -31,10 +32,10 @@ function BoardBox({ match }) {
   const [page, setPage] = useState(0);
   const { categorySeq } = match.params;
 
-  const [state] = useAsync(() => getBoards(page, categorySeq), [
-    page,
-    categorySeq,
-  ]);
+  const [state] = useAsync(
+    () => getBoards(page, categorySeq),
+    [page, categorySeq]
+  );
 
   // const { loading, data: { content: _boards, totalPages } = { content: [], totalPages: 1 }, error } = state.data? state: {};
   const { loading, data, error } = state;
@@ -45,8 +46,6 @@ function BoardBox({ match }) {
   useEffect(() => {
     setBoards([...boards, ...(newBoard || [])]);
   }, [newBoard]);
-
-  
 
   const PlusButton = styled.div`
     position: fixed;
@@ -70,9 +69,7 @@ function BoardBox({ match }) {
         </Link>
       </PlusButton>
       <div className="navBox">
-        <div className="navHeader">
-          목록
-        </div>
+        <div className="navHeader">목록</div>
         <ol className="">
           <NavLink
             to={`/boards/0`}
@@ -103,27 +100,24 @@ function BoardBox({ match }) {
             ))}
         </ol>
       </div>
-      <div className="boardRow boardBox">  
+      <div className="boardRow boardBox">
         <div className="boardList">
           {boards &&
             boards.map((board) => (
-                <Board
-                  key={board.board_id}
-                  id={board.board_id}
-                  title={board.title}
-                  content={board.content}
-                />
+              <Board
+                key={board.board_id}
+                id={board.board_id}
+                title={board.title}
+                content={board.content}
+              />
             ))}
-          {loading && (
-            <div>
-              <div>로딩중...</div>
-            </div>
-          )}
+          {loading && <Spin spinning={loading}></Spin>}
           {error && (
             <div>
               <div>error</div>
             </div>
           )}
+
           {totalPages - 1 !== page && (
             <Button block onClick={fetchBoards}>
               더보기
