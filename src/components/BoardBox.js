@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { Link, NavLink } from 'react-router-dom';
 import '../css/Navi.sass';
 import { Spin, Switch, Modal } from 'antd';
+import stringHelper from '../util/stringHelper';
 
 async function getBoards(page, category) {
   const response = await axios.get(
@@ -34,6 +35,7 @@ function BoardBox({ match }) {
 
   const [state] = useAsync(
     () => getBoards(page, categorySeq),
+
     [page, categorySeq]
   );
 
